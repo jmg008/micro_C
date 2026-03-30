@@ -14,13 +14,11 @@ enum class CharType {
     OperatorAndPunctuator
 };
 
-auto scanNumberLiteral()->Token;
-auto scanStringLiteral()->Token;
-auto scanIdentifierAndKeyword()->Token;
-auto scanOperatorAndPunctuator()->Token;
+auto scanNumberLiteral(string::iterator&)->Token;
+auto scanStringLiteral(string::iterator&)->Token;
+auto scanIdentifierAndKeyword(string::iterator&)->Token;
+auto scanOperatorAndPunctuator(string::iterator&)->Token;
 auto getCharType(char)->CharType;
 auto isChartype(char, CharType)->bool;
-
-static string::iterator current;
 
 auto scan(string)->vector<Token>;

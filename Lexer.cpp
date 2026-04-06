@@ -46,15 +46,17 @@ auto scan(string sourceCode)->vector<Token> {
 
 auto scanNumberLiteral(string::iterator& current)->Token {
     string lexeme;
+    Kind kind = Kind::IntLiteral;
     while (isCharType(*current, CharType::NumberLiteral)) {
         lexeme += *current++;
     }
     if (*current == '.') {
+        kind = Kind::FloatLiteral;
         lexeme += *current++;
         while (isCharType(*current, CharType::NumberLiteral))
             lexeme += *current++;
     }
-    return Token{Kind::NumberLiteral, lexeme};
+    return Token{kind, lexeme};
 }
 
 auto scanStringLiteral(string::iterator& current)->Token {

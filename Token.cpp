@@ -11,7 +11,7 @@ static map<string, Kind> stringToKind = {
     {"#EndOfToken", Kind::EndOfToken},
     
     {"null",        Kind::NullLiteral},
-    {"#Int",        Kind::IntLiteral},
+    {"#Int",        Kind::IntegerLiteral},
     {"#Float",      Kind::FloatLiteral},
     {"#String",     Kind::StringLiteral},
     {"#Char",       Kind::CharLiteral},

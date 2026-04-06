@@ -8,7 +8,7 @@ enum class Kind {
     Unknown, EndOfToken,
 
     NullLiteral,
-    IntLiteral, FloatLiteral, StringLiteral, CharLiteral,
+    IntegerLiteral, FloatLiteral, StringLiteral, CharLiteral,
     Identifier,
 
     Int, Char, Void,

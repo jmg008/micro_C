@@ -8,7 +8,7 @@ enum class Kind {
     Unknown, EndOfToken,
 
     NullLiteral,
-    NumberLiteral, StringLiteral,
+    NumberLiteral, StringLiteral, CharLiteral,
     Identifier,
 
     Int, Char, Void,
@@ -23,6 +23,7 @@ enum class Kind {
     Assignment,
     Add, Subtract,
     Asterisk, Divide, Modulo,
+    Ampersand,
     Equal, NotEqual,
     LessThan, GreaterThan,
     LessOrEqual, GreaterOrEqual,

@@ -13,6 +13,7 @@ static map<string, Kind> stringToKind = {
     {"null",        Kind::NullLiteral},
     {"#Number",     Kind::NullLiteral},
     {"#String",     Kind::StringLiteral},
+    {"#Char",       Kind::CharLiteral},
     {"#Identifier", Kind::Identifier},
 
     {"Int",         Kind::Int},
@@ -41,6 +42,7 @@ static map<string, Kind> stringToKind = {
     {"*",           Kind::Asterisk},
     {"/",           Kind::Divide},
     {"%",           Kind::Modulo},
+    {"&",           Kind::Ampersand},
 
     {"==",          Kind::Equal},
     {"!=",          Kind::NotEqual},

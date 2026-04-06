@@ -10,15 +10,18 @@ enum class CharType {
     WhiteSpace,
     NumberLiteral,
     StringLiteral,
+    CharLiteral,
     IdentifierAndKeyword,
     OperatorAndPunctuator
 };
 
 auto scanNumberLiteral(string::iterator&)->Token;
 auto scanStringLiteral(string::iterator&)->Token;
+auto scanCharLiteral(string::iterator&)->Token;
 auto scanIdentifierAndKeyword(string::iterator&)->Token;
 auto scanOperatorAndPunctuator(string::iterator&)->Token;
 auto getCharType(char)->CharType;
-auto isChartype(char, CharType)->bool;
+auto isCharType(char, CharType)->bool;
+auto convertToEscape(char)->char;
 
 auto scan(string)->vector<Token>;

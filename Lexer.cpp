@@ -23,6 +23,10 @@ auto scan(string sourceCode)->vector<Token> {
             result.push_back(scanStringLiteral(current));
             break;
         }
+        case CharType::CharLiteral: {
+            result.push_back(scanCharLiteral(current));
+            break;
+        }
         case CharType::IdentifierAndKeyword: {
             result.push_back(scanIdentifierAndKeyword(current));
             break;
@@ -42,12 +46,12 @@ auto scan(string sourceCode)->vector<Token> {
 
 auto scanNumberLiteral(string::iterator& current)->Token {
     string lexeme;
-    current++;
-    while (isChartype(*current, CharType::NumberLiteral))
+    while (isCharType(*current, CharType::NumberLiteral)) {
         lexeme += *current++;
+    }
     if (*current == '.') {
         lexeme += *current++;
-        while (isChartype(*current, CharType::NumberLiteral))
+        while (isCharType(*current, CharType::NumberLiteral))
             lexeme += *current++;
     }
     return Token{Kind::NumberLiteral, lexeme};
@@ -55,9 +59,18 @@ auto scanNumberLiteral(string::iterator& current)->Token {
 
 auto scanStringLiteral(string::iterator& current)->Token {
     string lexeme;
-    while (isChartype(*current, CharType::StringLiteral))
-        lexeme += *current++;
-    if (*current != '\'') {
+    current++;
+    while (isCharType(*current, CharType::StringLiteral)) {
+        if (*current == '\\') {
+            current++;
+            if (isCharType(*current, CharType::StringLiteral) || *current == '\'' || *current == '\"') {
+                lexeme += convertToEscape(*current++);
+            }
+        } else {
+            lexeme += *current++;
+        }
+    }
+    if (*current != '\"') {
         cout << "문자열이 안 끝남.";
         exit(1);
     }
@@ -65,19 +78,37 @@ auto scanStringLiteral(string::iterator& current)->Token {
     return Token{Kind::StringLiteral, lexeme};
 }
 
-auto scanIdentifierAndKeyowrd(string::iterator& current)->Token {
+auto scanCharLiteral(string::iterator& current)->Token {
     string lexeme;
-    while (isChartype(*current, CharType::IdentifierAndKeyword))
-        lexeme += *current++;
-    while (lexeme.empty() == false && toKind(lexeme) == Kind::Unknown) {
-        lexeme.pop_back();
-        current--;
+    current++;
+    if (isCharType(*current, CharType::CharLiteral)) {
+        if (*current == '\\') {
+            current++;
+            if (isCharType(*current, CharType::CharLiteral) || *current == '\'' || *current == '\"') {
+                lexeme += convertToEscape(*current++);
+            }
+        } else {
+            lexeme += *current++;
+        }
     }
-    if (lexeme.empty()) {
-        cout << *current << " 사용할 수 없는 문자.";
+    if (*current != '\'') {
+        cout << "문자가 안 끝남.";
         exit(1);
     }
-    return Token{toKind(lexeme), lexeme};
+    current++;
+    return Token{Kind::CharLiteral, lexeme};
+}
+
+auto scanIdentifierAndKeyword(string::iterator& current)->Token {
+    string lexeme;
+    while (isCharType(*current, CharType::IdentifierAndKeyword)) {
+        lexeme += *current++;
+    }
+    auto kind = toKind(lexeme);
+    if (kind == Kind::Unknown) {
+        kind = Kind::Identifier;
+    }
+    return Token{kind, lexeme};
 }
 
 auto scanOperatorAndPunctuator(string::iterator& current)->Token {
@@ -103,10 +134,13 @@ auto getCharType(char c)->CharType {
     if ('0' <= c && c <= '9') {
         return CharType::NumberLiteral;
     }
-    if (c == '\'') {
+    if (c == '\"') {
         return CharType::StringLiteral;
     }
-    if ('a' <= c && c <= 'z' || 'A' <= c && c <= 'Z') {
+    if (c == '\'') {
+        return CharType::CharLiteral;
+    }
+    if ('a' <= c && c <= 'z' || 'A' <= c && c <= 'Z' || c == '_') {
         return CharType::IdentifierAndKeyword;
     }
     if (33 <= c && c <= 47 && c != '\'' ||
@@ -115,6 +149,7 @@ auto getCharType(char c)->CharType {
         123 <= c && c <= 126) {
         return CharType::OperatorAndPunctuator;
     }
+    return CharType::Unknown;
 }
 
 auto isCharType(char c, CharType type)->bool {
@@ -123,7 +158,10 @@ auto isCharType(char c, CharType type)->bool {
             return '0' <= c && c <= '9';
         }
         case CharType::StringLiteral: {
-            return 32 <= c && c <= 126 && c != '\'';
+            return 32 <= c && c <= 126 && c != '\'' && c != '\"';
+        }
+        case CharType::CharLiteral: {
+            return 32 <= c && c <= 126 && c != '\'' && c != '\"';
         }
         case CharType::IdentifierAndKeyword: {
             return '0' <= c && c <= '9' ||
@@ -139,5 +177,22 @@ auto isCharType(char c, CharType type)->bool {
         default: {
             return false;
         }
+    }
+}
+
+char convertToEscape(char c) {
+    switch (c) {
+        case 'n': return '\n';
+        case 't': return '\t';
+        case 'r': return '\r';
+        case 'b': return '\b';
+        case 'v': return '\v';
+        case 'f': return '\f';
+        case 'a': return '\a';
+        case '\\': return '\\';
+        case '\'': return '\'';
+        case '\"': return '\"';
+        case '0': return '\0';
+        default:  return c; // 바꿀 게 없으면 그대로 반환
     }
 }

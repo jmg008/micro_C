@@ -12,6 +12,7 @@ enum class Kind {
     Identifier,
 
     Int, Char, Void,
+    Pointer, Array,
     Struct,
 
     Function, Return,

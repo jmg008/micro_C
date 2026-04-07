@@ -20,6 +20,8 @@ static map<string, Kind> stringToKind = {
     {"Int",         Kind::Int},
     {"Char",        Kind::Char},
     {"Void",        Kind::Void},
+    {"Pointer",     Kind::Pointer},
+    {"Array",       Kind::Array},
     {"Struct",      Kind::Struct},
 
     {"function",    Kind::Function},

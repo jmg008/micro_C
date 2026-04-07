@@ -46,7 +46,7 @@ auto scan(string sourceCode)->vector<Token> {
 
 auto scanNumberLiteral(string::iterator& current)->Token {
     string lexeme;
-    Kind kind = Kind::IntLiteral;
+    Kind kind = Kind::IntegerLiteral;
     while (isCharType(*current, CharType::NumberLiteral)) {
         lexeme += *current++;
     }

@@ -15,13 +15,20 @@ enum class CharType {
     OperatorAndPunctuator
 };
 
-auto scanNumberLiteral(string::iterator&)->Token;
-auto scanStringLiteral(string::iterator&)->Token;
-auto scanCharLiteral(string::iterator&)->Token;
-auto scanIdentifierAndKeyword(string::iterator&)->Token;
-auto scanOperatorAndPunctuator(string::iterator&)->Token;
+class Lexer
+{
+private:
+    static string::iterator current;
+    auto scanNumberLiteral()->Token;
+    auto scanStringLiteral()->Token;
+    auto scanCharLiteral()->Token;
+    auto scanIdentifierAndKeyword()->Token;
+    auto scanOperatorAndPunctuator()->Token;
+public:
+    auto scan(string)->vector<Token>;
+};
+
+
 auto getCharType(char)->CharType;
 auto isCharType(char, CharType)->bool;
 auto convertToEscape(char)->char;
-
-auto scan(string)->vector<Token>;

@@ -5,7 +5,7 @@
 
 using namespace std;
 
-auto scan(string sourceCode)->vector<Token> {
+auto Lexer::scan(string sourceCode)->vector<Token> {
     vector<Token> result;
     sourceCode += '\0';
     string::iterator current = sourceCode.begin();
@@ -16,23 +16,23 @@ auto scan(string sourceCode)->vector<Token> {
             break;
         }
         case CharType::NumberLiteral: {
-            result.push_back(scanNumberLiteral(current));
+            result.push_back(scanNumberLiteral());
             break;
         }
         case CharType::StringLiteral: {
-            result.push_back(scanStringLiteral(current));
+            result.push_back(scanStringLiteral());
             break;
         }
         case CharType::CharLiteral: {
-            result.push_back(scanCharLiteral(current));
+            result.push_back(scanCharLiteral());
             break;
         }
         case CharType::IdentifierAndKeyword: {
-            result.push_back(scanIdentifierAndKeyword(current));
+            result.push_back(scanIdentifierAndKeyword());
             break;
         }
         case CharType::OperatorAndPunctuator: {
-            result.push_back(scanOperatorAndPunctuator(current));
+            result.push_back(scanOperatorAndPunctuator());
             break;
         }
         default:
@@ -44,7 +44,7 @@ auto scan(string sourceCode)->vector<Token> {
     return result;
 }
 
-auto scanNumberLiteral(string::iterator& current)->Token {
+auto Lexer::scanNumberLiteral()->Token {
     string lexeme;
     Kind kind = Kind::IntegerLiteral;
     while (isCharType(*current, CharType::NumberLiteral)) {
@@ -59,7 +59,7 @@ auto scanNumberLiteral(string::iterator& current)->Token {
     return Token{kind, lexeme};
 }
 
-auto scanStringLiteral(string::iterator& current)->Token {
+auto Lexer::scanStringLiteral()->Token {
     string lexeme;
     current++;
     while (isCharType(*current, CharType::StringLiteral)) {
@@ -80,7 +80,7 @@ auto scanStringLiteral(string::iterator& current)->Token {
     return Token{Kind::StringLiteral, lexeme};
 }
 
-auto scanCharLiteral(string::iterator& current)->Token {
+auto Lexer::scanCharLiteral()->Token {
     string lexeme;
     current++;
     if (isCharType(*current, CharType::CharLiteral)) {
@@ -101,7 +101,7 @@ auto scanCharLiteral(string::iterator& current)->Token {
     return Token{Kind::CharLiteral, lexeme};
 }
 
-auto scanIdentifierAndKeyword(string::iterator& current)->Token {
+auto Lexer::scanIdentifierAndKeyword()->Token {
     string lexeme;
     while (isCharType(*current, CharType::IdentifierAndKeyword)) {
         lexeme += *current++;
@@ -113,7 +113,7 @@ auto scanIdentifierAndKeyword(string::iterator& current)->Token {
     return Token{kind, lexeme};
 }
 
-auto scanOperatorAndPunctuator(string::iterator& current)->Token {
+auto Lexer::scanOperatorAndPunctuator()->Token {
     string lexeme;
     while (isCharType(*current, CharType::OperatorAndPunctuator)) {
         lexeme += *current++;

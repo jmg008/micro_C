@@ -18,14 +18,15 @@ enum class CharType {
 class Lexer
 {
 private:
-    static string::iterator current;
+    string sourceCode;
+    string::iterator current;
     auto scanNumberLiteral()->Token;
     auto scanStringLiteral()->Token;
     auto scanCharLiteral()->Token;
     auto scanIdentifierAndKeyword()->Token;
     auto scanOperatorAndPunctuator()->Token;
 public:
-    auto scan(string)->vector<Token>;
+    auto scan()->vector<Token>;
 };
 
 

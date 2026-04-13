@@ -5,10 +5,10 @@
 
 using namespace std;
 
-auto Lexer::scan(string sourceCode)->vector<Token> {
+auto Lexer::scan()->vector<Token> {
     vector<Token> result;
     sourceCode += '\0';
-    string::iterator current = sourceCode.begin();
+    current = sourceCode.begin();
     while (*current != '\0') {
         switch (getCharType(*current)) {
         case CharType::WhiteSpace: {
@@ -168,7 +168,8 @@ auto isCharType(char c, CharType type)->bool {
         case CharType::IdentifierAndKeyword: {
             return '0' <= c && c <= '9' ||
                    'a' <= c && c <= 'z' ||
-                   'A' <= c && c <= 'Z';
+                   'A' <= c && c <= 'Z' ||
+                   c == '_';
         }
         case CharType::OperatorAndPunctuator: {
             return 33 <= c && c <= 47 ||

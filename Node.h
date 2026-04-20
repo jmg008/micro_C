@@ -47,6 +47,7 @@ struct Expression {
 };
 
 struct Function: Statement {
+    Type type;
     string name;
     vector<vector<Kind, string>> parameters;
     vector<Statement*> block;
@@ -54,7 +55,7 @@ struct Function: Statement {
 };
 
 struct Variable: Statement {
-    Type type; // <Pointer, Pointer, Int>
+    Type type;
     string name;
     Expression* expression;
     auto generate()->void;

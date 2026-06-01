@@ -37,7 +37,7 @@ enum class Kind {
     Comma, Colon, Semicolon,
     LeftParen, RightParen,
     LeftBrace, RightBrace,
-    LeftBraket, RightBraket,
+    LeftBracket, RightBracket,
 };
 
 auto toKind(string)->Kind;

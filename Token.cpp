@@ -64,8 +64,8 @@ static map<string, Kind> stringToKind = {
     {")",           Kind::RightParen},
     {"{",           Kind::LeftBrace},
     {"}",           Kind::RightBrace},
-    {"[",           Kind::LeftBraket},
-    {"]",           Kind::RightBraket},
+    {"[",           Kind::LeftBracket},
+    {"]",           Kind::RightBracket},
 };
 
 static auto KindtoString = [] {

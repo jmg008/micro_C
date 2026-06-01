@@ -10,7 +10,8 @@ private:
     vector<Token> tokens;
     vector<Token>::iterator current;
 
-    auto parseDefinition()->void;
+    auto parseBlock()->void;
+    auto parseDeclaration()->Type*;
 
     auto skipCurrent()->void;
     auto skipCurrent(Kind)->void;

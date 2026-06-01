@@ -41,24 +41,29 @@ struct Array: Type {
     int length; // 배열의 길이
 };
 
-struct Expression {
-    virtual ~Expression() = default;
+struct Declaration {
+    virtual ~Declaration() = default;
     virtual auto generate()->void = 0;
 };
 
-struct Function: Statement {
+struct Function: Declaration {
     Type type;
     string name;
-    vector<vector<Kind, string>> parameters;
+    vector<pair<Kind, string>> parameters;
     vector<Statement*> block;
     auto generate()->void;
 };
 
-struct Variable: Statement {
+struct Variable: Declaration {
     Type type;
     string name;
     Expression* expression;
     auto generate()->void;
+};
+
+struct Expression {
+    virtual ~Expression() = default;
+    virtual auto generate()->void = 0;
 };
 
 struct Return: Statement {

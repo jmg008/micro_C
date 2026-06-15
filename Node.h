@@ -6,27 +6,19 @@
 using std::vector;
 using std::string;
 
+struct Declaration {
+    virtual ~Declaration() = default;
+    virtual auto generate()->void = 0;
+};
+
 struct Program {
-    vector<struct Function*> functions;
+    vector<Declaration*> declarations;
 };
 
 struct Statement {
     virtual ~Statement() = default;
     virtual auto generate()->void = 0;
 };
-
-// 멤버를 만들기 vs Type에 이름 추가
-// Struct의 Name도 필요하니 name 추가로 결정
-
-// struct Type {
-//     Kind type;
-//     // int pointerDepth;
-//     // bool isArray;
-//     vector<bool> pointerAndArray; // 0:pointer, 1:array ex) int* arr[10] -> <0, 1> / int (*arr)[10] -> <1,0>
-//     int memLength; // 전체 메모리 크기
-//     string name; // type == struct || type == member 변수
-//     // Type* member;
-// };
 
 struct Type {
     Kind type;
@@ -41,21 +33,16 @@ struct Array: Type {
     int length; // 배열의 길이
 };
 
-struct Declaration {
-    virtual ~Declaration() = default;
-    virtual auto generate()->void = 0;
-};
-
 struct Function: Declaration {
-    Type type;
+    Type* type;
     string name;
-    vector<pair<Kind, string>> parameters;
+    vector<pair<Type*, string>> parameters;
     vector<Statement*> block;
     auto generate()->void;
 };
 
-struct Variable: Declaration {
-    Type type;
+struct GrobalVariable: Declaration {
+    Type* type;
     string name;
     Expression* expression;
     auto generate()->void;
@@ -162,14 +149,14 @@ struct Dereference: Expression {
 };
 
 struct GetElement: Expression {
-  Expression* sub;
-  Expression* index;
-  auto generate()->void;
+    Expression* sub;
+    Expression* index;
+    auto generate()->void;
 };
 
 struct GetVariable: Expression {
-  string name;
-  auto generate()->void;
+    string name;
+    auto generate()->void;
 };
 
 // 구조체 접근
@@ -186,25 +173,25 @@ struct GetMemberArrow: Expression {
 };
 
 struct NullLiteral: Expression {
-  auto generate()->void;
+    auto generate()->void;
 };
 
 struct BooleanLiteral: Expression {
-  bool value = false;
-  auto generate()->void;
+    bool value = false;
+    auto generate()->void;
 };
 
 struct IntegerLiteral: Expression {
-  long long value = 0;
-  auto generate()->void;
+    long long value = 0;
+    auto generate()->void;
 };
 
 struct FloatLiteral: Expression {
-  double value = 0.0;
-  auto generate()->void;
+    double value = 0.0;
+    auto generate()->void;
 };
 
 struct StringLiteral: Expression {
-  string value;
-  auto generate()->void;
+    string value;
+    auto generate()->void;
 };

@@ -39,7 +39,6 @@ auto Parser::parseDeclaration()->Declaration* {
         res->parameters = parseParameter();
 
         if (current->kind == Kind::LeftBrace) {
-            skipCurrent();
             res->block = parseBlock();
         } else {
             skipCurrent(Kind::Semicolon);
@@ -83,7 +82,7 @@ auto Parser::parseType(string& name)->Type* {
 }
 
 auto Parser::parseType_reg(string& name)->stack<int> {
-    stack<int> res = stack<int>();
+    stack<int> res;
     int pointer = 0;
     while (skipCurrentIf(Kind::Asterisk)) {
         pointer++;
@@ -112,7 +111,7 @@ auto Parser::parseType_reg(string& name)->stack<int> {
 }
 
 auto Parser::parseParameter()->vector<pair<Type*, string>> {
-    vector<pair<Type*, string>> res = vector<pair<Type*, string>>();
+    vector<pair<Type*, string>> res;
 
     while (!(current->kind == Kind::RightParen)) {
         string name;
@@ -129,6 +128,16 @@ auto Parser::parseParameter()->vector<pair<Type*, string>> {
     skipCurrent();
 
     return res;
+}
+
+auto Parser::parseBlock()->vector<Statement*> {
+    vector<Statement*> res;
+    skipCurrent(Kind::LeftBrace);
+    while (current->kind != Kind::RightBrace) {
+        switch (current->kind) {
+        default: 
+        }
+    }
 }
 
 auto Parser::skipCurrent()->void {

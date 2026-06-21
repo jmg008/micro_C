@@ -16,6 +16,13 @@ private:
     auto parseType(string&)->Type*;
     auto parseType_reg(string&)->stack<int>;
     auto parseParameter()->vector<pair<Type*, string>>;
+    auto parseExpressionStatement()->Expression*;
+    auto parseVariable();
+    auto parseFor()->For*;
+    auto parseIf()->If*;
+    auto parseReturn()->Return*;
+    auto parseContinue()->Continue*;
+    auto parseBreak()->Break*;
 
     auto skipCurrent()->void;
     auto skipCurrent(Kind)->void;
